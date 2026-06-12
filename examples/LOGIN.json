@@ -1,0 +1,29 @@
+{
+  "http-request": {
+    "method": "POST",
+    "path": "/login",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "email": "alice@example.com",
+      "password": "securepassword123"
+    }
+  },
+  "http-response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login",
+      "user": {
+        "id": 1,
+        "name": "Alice Smith",
+        "email": "alice@example.com",
+        "role": "OWNER",
+        "tenantId": 1
+      }
+    }
+  }
+}

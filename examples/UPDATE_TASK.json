@@ -1,0 +1,32 @@
+{
+  "http-request": {
+    "method": "PUT",
+    "path": "/tasks/1",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login"
+    },
+    "body": {
+      "title": "Implement JWT auth & tests",
+      "description": "Implement backend login/register and contract tests",
+      "priority": "HIGH",
+      "status": "IN_PROGRESS",
+      "dueDate": "2026-06-25"
+    }
+  },
+  "http-response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": 1,
+      "title": "Implement JWT auth & tests",
+      "description": "Implement backend login/register and contract tests",
+      "priority": "HIGH",
+      "status": "IN_PROGRESS",
+      "dueDate": "2026-06-25",
+      "workspaceId": 1
+    }
+  }
+}

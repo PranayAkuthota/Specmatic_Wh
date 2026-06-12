@@ -1,0 +1,36 @@
+{
+  "http-request": {
+    "method": "POST",
+    "path": "/register",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "password": "securepassword123",
+      "tenantName": "Acme Corp"
+    }
+  },
+  "http-response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_register",
+      "user": {
+        "id": 1,
+        "name": "Alice Smith",
+        "email": "alice@example.com",
+        "role": "OWNER",
+        "tenantId": 1
+      },
+      "tenant": {
+        "id": 1,
+        "name": "Acme Corp",
+        "createdAt": "2026-06-12T15:00:00Z"
+      }
+    }
+  }
+}

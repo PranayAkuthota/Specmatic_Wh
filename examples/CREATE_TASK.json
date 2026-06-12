@@ -1,0 +1,33 @@
+{
+  "http-request": {
+    "method": "POST",
+    "path": "/tasks",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login"
+    },
+    "body": {
+      "title": "Implement JWT auth",
+      "description": "Implement login and register with JWT tokens",
+      "priority": "HIGH",
+      "status": "TODO",
+      "dueDate": "2026-06-30",
+      "workspaceId": 1
+    }
+  },
+  "http-response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": 1,
+      "title": "Implement JWT auth",
+      "description": "Implement login and register with JWT tokens",
+      "priority": "HIGH",
+      "status": "TODO",
+      "dueDate": "2026-06-30",
+      "workspaceId": 1
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# specmatic.yaml
+sources:
+  - provider: filesystem
+    directory: api-specs

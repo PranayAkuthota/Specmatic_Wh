@@ -1,0 +1,18 @@
+{
+  "http-request": {
+    "method": "DELETE",
+    "path": "/tasks/1",
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login"
+    }
+  },
+  "http-response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "success": true
+    }
+  }
+}

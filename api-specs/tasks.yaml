@@ -1,0 +1,275 @@
+openapi: 3.1.0
+info:
+  title: WorkHive Tasks API
+  version: 1.0.0
+  description: Task management for WorkHive SaaS.
+paths:
+  /tasks:
+    post:
+      summary: Create a new task
+      operationId: createTask
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+                - workspaceId
+              properties:
+                title:
+                  type: string
+                  example: "Implement JWT auth"
+                description:
+                  type: string
+                  example: "Implement login and register with JWT tokens"
+                priority:
+                  type: string
+                  enum: [LOW, MEDIUM, HIGH]
+                  default: "MEDIUM"
+                  example: "HIGH"
+                status:
+                  type: string
+                  enum: [TODO, IN_PROGRESS, DONE]
+                  default: "TODO"
+                  example: "TODO"
+                dueDate:
+                  type: [string, "null"]
+                  format: date
+                  example: "2026-06-30"
+                workspaceId:
+                  type: integer
+                  example: 1
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid input or workspace not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: List tasks
+      operationId: listTasks
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: workspaceId
+          in: query
+          required: false
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tasks/{id}:
+    get:
+      summary: Get task by ID
+      operationId: getTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Task details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update task details
+      operationId: updateTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Implement JWT auth & tests"
+                description:
+                  type: string
+                  example: "Implement backend login/register and contract tests"
+                priority:
+                  type: string
+                  enum: [LOW, MEDIUM, HIGH]
+                  example: "HIGH"
+                status:
+                  type: string
+                  enum: [TODO, IN_PROGRESS, DONE]
+                  example: "IN_PROGRESS"
+                dueDate:
+                  type: [string, "null"]
+                  format: date
+                  example: "2026-06-25"
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete a task
+      operationId: deleteTask
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Task:
+      type: object
+      required:
+        - id
+        - title
+        - priority
+        - status
+        - workspaceId
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "Implement JWT auth"
+        description:
+          type: [string, "null"]
+          example: "Implement login and register with JWT tokens"
+        priority:
+          type: string
+          enum: [LOW, MEDIUM, HIGH]
+          example: "HIGH"
+        status:
+          type: string
+          enum: [TODO, IN_PROGRESS, DONE]
+          example: "TODO"
+        dueDate:
+          type: [string, "null"]
+          format: date
+          example: "2026-06-30"
+        workspaceId:
+          type: integer
+          example: 1
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: "Task not found"

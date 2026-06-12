@@ -1,0 +1,26 @@
+{
+  "http-request": {
+    "method": "POST",
+    "path": "/workspaces",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login"
+    },
+    "body": {
+      "name": "Engineering",
+      "description": "Engineering and development team workspace"
+    }
+  },
+  "http-response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": 1,
+      "name": "Engineering",
+      "description": "Engineering and development team workspace",
+      "tenantId": 1
+    }
+  }
+}

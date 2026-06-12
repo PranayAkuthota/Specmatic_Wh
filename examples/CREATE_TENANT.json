@@ -1,0 +1,24 @@
+{
+  "http-request": {
+    "method": "POST",
+    "path": "/tenants",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock_token_login"
+    },
+    "body": {
+      "name": "Acme Corp"
+    }
+  },
+  "http-response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "id": 1,
+      "name": "Acme Corp",
+      "createdAt": "2026-06-12T15:00:00Z"
+    }
+  }
+}

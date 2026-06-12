@@ -1,0 +1,135 @@
+openapi: 3.1.0
+info:
+  title: WorkHive Workspaces API
+  version: 1.0.0
+  description: Workspace management for WorkHive SaaS.
+paths:
+  /workspaces:
+    post:
+      summary: Create a new workspace
+      operationId: createWorkspace
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: "Engineering"
+                description:
+                  type: string
+                  example: "Engineering and development team workspace"
+      responses:
+        '201':
+          description: Workspace created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    get:
+      summary: List workspaces for the authenticated tenant
+      operationId: listWorkspaces
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of workspaces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Workspace'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /workspaces/{id}:
+    get:
+      summary: Get workspace by ID
+      operationId: getWorkspace
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 1
+      responses:
+        '200':
+          description: Workspace details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Workspace not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Workspace:
+      type: object
+      required:
+        - id
+        - name
+        - tenantId
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Engineering"
+        description:
+          type: [string, "null"]
+          example: "Engineering and development team workspace"
+        tenantId:
+          type: integer
+          example: 1
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: "Workspace not found"

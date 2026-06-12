@@ -1,0 +1,19 @@
+# specmatic local jdk
+jdk/
+
+# python virtual environment & database
+venv/
+db.sqlite3
+*.pyc
+__pycache__/
+.pytest_cache/
+
+# frontend node modules & build outputs
+frontend/node_modules/
+frontend/dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store

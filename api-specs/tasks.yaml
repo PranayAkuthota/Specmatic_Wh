@@ -1,8 +1,10 @@
 openapi: 3.1.0
+
 info:
   title: WorkHive Tasks API
   version: 1.0.0
   description: Task management for WorkHive SaaS.
+
 paths:
   /tasks:
     post:
@@ -10,6 +12,7 @@ paths:
       operationId: createTask
       security:
         - BearerAuth: []
+
       requestBody:
         required: true
         content:
@@ -22,27 +25,30 @@ paths:
               properties:
                 title:
                   type: string
-                  example: "Implement JWT auth"
                 description:
                   type: string
-                  example: "Implement login and register with JWT tokens"
                 priority:
                   type: string
-                  enum: [LOW, MEDIUM, HIGH]
-                  default: "MEDIUM"
-                  example: "HIGH"
+                  enum:
+                    - LOW
+                    - MEDIUM
+                    - HIGH
+                  default: MEDIUM
                 status:
                   type: string
-                  enum: [TODO, IN_PROGRESS, DONE]
-                  default: "TODO"
-                  example: "TODO"
+                  enum:
+                    - TODO
+                    - IN_PROGRESS
+                    - DONE
+                  default: TODO
                 dueDate:
-                  type: [string, "null"]
+                  type:
+                    - string
+                    - "null"
                   format: date
-                  example: "2026-06-30"
                 workspaceId:
                   type: integer
-                  example: 1
+
       responses:
         '201':
           description: Task created successfully
@@ -50,39 +56,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-'400':
-  description: Bad Request
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        invalidRequest:
-          value:
-            message: Invalid request
-          '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     get:
       summary: List tasks
       operationId: listTasks
       security:
         - BearerAuth: []
+
       parameters:
         - name: workspaceId
           in: query
           required: false
           schema:
             type: integer
-          example: 1
+
       responses:
         '200':
           description: List of tasks
@@ -92,16 +93,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
-      '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /tasks/{id}:
     get:
@@ -109,13 +107,14 @@ paths:
       operationId: getTask
       security:
         - BearerAuth: []
+
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          example: 1
+
       responses:
         '200':
           description: Task details
@@ -123,39 +122,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-      '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
-      '404':
-  description: Not Found
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        notFound:
-          value:
-            message: Resource not found
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     put:
-      summary: Update task details
+      summary: Update task
       operationId: updateTask
       security:
         - BearerAuth: []
+
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          example: 1
+
       requestBody:
         required: true
         content:
@@ -165,22 +159,26 @@ paths:
               properties:
                 title:
                   type: string
-                  example: "Implement JWT auth & tests"
                 description:
                   type: string
-                  example: "Implement backend login/register and contract tests"
                 priority:
                   type: string
-                  enum: [LOW, MEDIUM, HIGH]
-                  example: "HIGH"
+                  enum:
+                    - LOW
+                    - MEDIUM
+                    - HIGH
                 status:
                   type: string
-                  enum: [TODO, IN_PROGRESS, DONE]
-                  example: "IN_PROGRESS"
+                  enum:
+                    - TODO
+                    - IN_PROGRESS
+                    - DONE
                 dueDate:
-                  type: [string, "null"]
+                  type:
+                    - string
+                    - "null"
                   format: date
-                  example: "2026-06-25"
+
       responses:
         '200':
           description: Task updated successfully
@@ -188,49 +186,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
+
         '400':
-  description: Bad Request
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        invalidRequest:
-          value:
-            message: Invalid request
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
         '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
         '404':
-  description: Not Found
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        notFound:
-          value:
-            message: Resource not found
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     delete:
-      summary: Delete a task
+      summary: Delete task
       operationId: deleteTask
       security:
         - BearerAuth: []
+
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
-          example: 1
+
       responses:
         '200':
           description: Task deleted successfully
@@ -243,27 +233,20 @@ paths:
                 properties:
                   success:
                     type: boolean
-                    example: true
-      '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
-      '404':
-  description: Not Found
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        notFound:
-          value:
-            message: Resource not found
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   securitySchemes:
@@ -271,6 +254,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
   schemas:
     Task:
       type: object
@@ -283,28 +267,32 @@ components:
       properties:
         id:
           type: integer
-          example: 1
         title:
           type: string
-          example: "Implement JWT auth"
         description:
-          type: [string, "null"]
-          example: "Implement login and register with JWT tokens"
+          type:
+            - string
+            - "null"
         priority:
           type: string
-          enum: [LOW, MEDIUM, HIGH]
-          example: "HIGH"
+          enum:
+            - LOW
+            - MEDIUM
+            - HIGH
         status:
           type: string
-          enum: [TODO, IN_PROGRESS, DONE]
-          example: "TODO"
+          enum:
+            - TODO
+            - IN_PROGRESS
+            - DONE
         dueDate:
-          type: [string, "null"]
+          type:
+            - string
+            - "null"
           format: date
-          example: "2026-06-30"
         workspaceId:
           type: integer
-          example: 1
+
     ErrorResponse:
       type: object
       required:
@@ -312,4 +300,3 @@ components:
       properties:
         error:
           type: string
-          example: "Task not found"

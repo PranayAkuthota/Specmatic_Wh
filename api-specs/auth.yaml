@@ -3,14 +3,12 @@ openapi: 3.1.0
 info:
   title: WorkHive Authentication API
   version: 1.0.0
-  description: Authentication and profile management for WorkHive SaaS.
 
 paths:
+
   /register:
     post:
-      summary: Register a new user and tenant
       operationId: register
-
       requestBody:
         required: true
         content:
@@ -27,28 +25,30 @@ paths:
                   type: string
                 email:
                   type: string
-                  format: email
                 password:
                   type: string
                   minLength: 6
                 tenantName:
                   type: string
             examples:
+              validRequest:
+                value:
+                  name: John Doe
+                  email: john@example.com
+                  password: password123
+                  tenantName: Acme
+
               invalidRequest:
                 value:
                   name: Alice Smith
 
       responses:
         '201':
-          description: User and Tenant registered successfully
+          description: Created
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - token
-                  - user
-                  - tenant
                 properties:
                   token:
                     type: string
@@ -56,6 +56,20 @@ paths:
                     $ref: '#/components/schemas/User'
                   tenant:
                     $ref: '#/components/schemas/Tenant'
+              examples:
+                validRequest:
+                  value:
+                    token: jwt-token
+                    user:
+                      id: 1
+                      name: John Doe
+                      email: john@example.com
+                      role: OWNER
+                      tenantId: 1
+                    tenant:
+                      id: 1
+                      name: Acme
+                      createdAt: "2026-06-13T12:00:00Z"
 
         '400':
           description: Bad Request
@@ -70,7 +84,6 @@ paths:
 
   /login:
     post:
-      summary: Login an existing user
       operationId: login
 
       requestBody:
@@ -85,10 +98,14 @@ paths:
               properties:
                 email:
                   type: string
-                  format: email
                 password:
                   type: string
             examples:
+              validCredentials:
+                value:
+                  email: john@example.com
+                  password: password123
+
               invalidCredentials:
                 value:
                   email: wrong@example.com
@@ -96,22 +113,29 @@ paths:
 
       responses:
         '200':
-          description: Login successful
+          description: Success
           content:
             application/json:
               schema:
                 type: object
-                required:
-                  - token
-                  - user
                 properties:
                   token:
                     type: string
                   user:
                     $ref: '#/components/schemas/User'
+              examples:
+                validCredentials:
+                  value:
+                    token: jwt-token
+                    user:
+                      id: 1
+                      name: John Doe
+                      email: john@example.com
+                      role: OWNER
+                      tenantId: 1
 
         '401':
-          description: Invalid credentials
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -120,28 +144,26 @@ paths:
                 invalidCredentials:
                   value:
                     error: Invalid email or password
-
   /profile:
-    get:
-      summary: Get current user profile
+   get:
       operationId: getProfile
 
       security:
         - BearerAuth: []
 
       parameters:
-        - name: Authorization
+        - name: X-Test-Case
           in: header
-          required: true
+          required: false
           schema:
             type: string
           examples:
             unauthorized:
-              value: Bearer invalidtoken
+              value: unauthorized
 
       responses:
         '200':
-          description: Current user profile details
+          description: Success
           content:
             application/json:
               schema:
@@ -159,6 +181,7 @@ paths:
                     error: Unauthorized
 
 components:
+
   securitySchemes:
     BearerAuth:
       type: http
@@ -166,14 +189,9 @@ components:
       bearerFormat: JWT
 
   schemas:
+
     User:
       type: object
-      required:
-        - id
-        - name
-        - email
-        - role
-        - tenantId
       properties:
         id:
           type: integer
@@ -181,7 +199,6 @@ components:
           type: string
         email:
           type: string
-          format: email
         role:
           type: string
           enum:
@@ -193,10 +210,6 @@ components:
 
     Tenant:
       type: object
-      required:
-        - id
-        - name
-        - createdAt
       properties:
         id:
           type: integer
@@ -208,8 +221,6 @@ components:
 
     ErrorResponse:
       type: object
-      required:
-        - error
       properties:
         error:
           type: string

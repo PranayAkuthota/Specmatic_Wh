@@ -1,8 +1,10 @@
 openapi: 3.1.0
+
 info:
   title: WorkHive Workspaces API
   version: 1.0.0
   description: Workspace management for WorkHive SaaS.
+
 paths:
   /workspaces:
     post:
@@ -10,6 +12,7 @@ paths:
       operationId: createWorkspace
       security:
         - BearerAuth: []
+
       requestBody:
         required: true
         content:
@@ -21,10 +24,11 @@ paths:
               properties:
                 name:
                   type: string
-                  example: "Engineering"
+                  example: Engineering
                 description:
                   type: string
-                  example: "Engineering and development team workspace"
+                  example: Engineering and development team workspace
+
       responses:
         '201':
           description: Workspace created successfully
@@ -32,32 +36,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-      '400':
-  description: Bad Request
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        invalidRequest:
-          value:
-            message: Invalid request
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
         '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized'
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
     get:
       summary: List workspaces for the authenticated tenant
       operationId: listWorkspaces
       security:
         - BearerAuth: []
+
       responses:
         '200':
           description: List of workspaces
@@ -67,16 +66,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Workspace'
-     '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /workspaces/{id}:
     get:
@@ -84,6 +80,7 @@ paths:
       operationId: getWorkspace
       security:
         - BearerAuth: []
+
       parameters:
         - name: id
           in: path
@@ -91,6 +88,7 @@ paths:
           schema:
             type: integer
           example: 1
+
       responses:
         '200':
           description: Workspace details
@@ -98,26 +96,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-      '401':
-  description: Unauthorized
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        unauthorized:
-          value:
-            message: Unauthorized
-    '404':
-  description: Not Found
-  content:
-    application/json:
-      schema:
-        $ref: '#/components/schemas/Error'
-      examples:
-        notFound:
-          value:
-            message: Resource not found
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+        '404':
+          description: Workspace not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   securitySchemes:
@@ -125,6 +117,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
   schemas:
     Workspace:
       type: object
@@ -136,15 +129,21 @@ components:
         id:
           type: integer
           example: 1
+
         name:
           type: string
-          example: "Engineering"
+          example: Engineering
+
         description:
-          type: [string, "null"]
-          example: "Engineering and development team workspace"
+          type:
+            - string
+            - "null"
+          example: Engineering and development team workspace
+
         tenantId:
           type: integer
           example: 1
+
     ErrorResponse:
       type: object
       required:
@@ -152,4 +151,4 @@ components:
       properties:
         error:
           type: string
-          example: "Workspace not found"
+          example: Workspace not found

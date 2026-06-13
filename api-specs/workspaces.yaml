@@ -32,18 +32,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+      '400':
+  description: Bad Request
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        invalidRequest:
+          value:
+            message: Invalid request
         '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized'
 
     get:
       summary: List workspaces for the authenticated tenant
@@ -59,12 +67,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Workspace'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+     '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
 
   /workspaces/{id}:
     get:
@@ -86,18 +98,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Workspace'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Workspace not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+      '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
+    '404':
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        notFound:
+          value:
+            message: Resource not found
 
 components:
   securitySchemes:

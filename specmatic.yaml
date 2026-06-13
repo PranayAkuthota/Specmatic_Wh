@@ -1,4 +1,7 @@
-# specmatic.yaml
 sources:
   - provider: filesystem
-    directory: api-specs
+    provides:
+      - api-specs/auth.yaml
+      - api-specs/tasks.yaml
+      - api-specs/tenants.yaml
+      - api-specs/workspaces.yaml

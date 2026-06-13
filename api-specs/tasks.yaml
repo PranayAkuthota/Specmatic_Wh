@@ -50,18 +50,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-        '400':
-          description: Invalid input or workspace not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+'400':
+  description: Bad Request
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        invalidRequest:
+          value:
+            message: Invalid request
+          '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
 
     get:
       summary: List tasks
@@ -84,12 +92,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+      '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
 
   /tasks/{id}:
     get:
@@ -111,18 +123,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Task'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Task not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+      '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
+      '404':
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        notFound:
+          value:
+            message: Resource not found
 
     put:
       summary: Update task details
@@ -169,23 +189,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Task'
         '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+  description: Bad Request
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        invalidRequest:
+          value:
+            message: Invalid request
         '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
         '404':
-          description: Task not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        notFound:
+          value:
+            message: Resource not found
 
     delete:
       summary: Delete a task
@@ -212,18 +244,26 @@ paths:
                   success:
                     type: boolean
                     example: true
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '404':
-          description: Task not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+      '401':
+  description: Unauthorized
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        unauthorized:
+          value:
+            message: Unauthorized
+      '404':
+  description: Not Found
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/Error'
+      examples:
+        notFound:
+          value:
+            message: Resource not found
 
 components:
   securitySchemes:

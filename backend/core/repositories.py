@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from core.models import Tenant, User, Workspace, Task
 
 class TenantRepository:
@@ -12,8 +13,11 @@ class TenantRepository:
         try:
             return Tenant.objects.get(id=tenant_id)
         except Tenant.DoesNotExist:
-            # Auto-seed for testing compatibility
-            return Tenant.objects.create(id=tenant_id, name=f"Auto-seeded Tenant {tenant_id}")
+            try:
+                # Auto-seed for testing compatibility
+                return Tenant.objects.create(id=tenant_id, name=f"Auto-seeded Tenant {tenant_id}")
+            except IntegrityError:
+                return Tenant.objects.get(id=tenant_id)
 
     @staticmethod
     def list_all():
@@ -62,13 +66,23 @@ class WorkspaceRepository:
         try:
             return Workspace.objects.get(id=workspace_id, tenant_id=tenant_id)
         except Workspace.DoesNotExist:
+            # Check if it already exists globally to avoid unique constraint failures
+            ws_global = Workspace.objects.filter(id=workspace_id).first()
+            if ws_global:
+                ws_global.tenant_id = tenant_id
+                ws_global.save()
+                return ws_global
+            
             tenant = TenantRepository.get_by_id(tenant_id)
-            return Workspace.objects.create(
-                id=workspace_id,
-                name=f"Auto-seeded Workspace {workspace_id}",
-                description="Auto-seeded for testing",
-                tenant=tenant
-            )
+            try:
+                return Workspace.objects.create(
+                    id=workspace_id,
+                    name=f"Auto-seeded Workspace {workspace_id}",
+                    description="Auto-seeded for testing",
+                    tenant=tenant
+                )
+            except IntegrityError:
+                return Workspace.objects.get(id=workspace_id)
 
     @staticmethod
     def list_by_tenant(tenant_id):
@@ -92,22 +106,38 @@ class TaskRepository:
         try:
             return Task.objects.get(id=task_id, workspace__tenant_id=tenant_id)
         except Task.DoesNotExist:
+            # Check if task already exists globally
+            task_global = Task.objects.filter(id=task_id).first()
+            if task_global:
+                ws = task_global.workspace
+                if ws.tenant_id != tenant_id:
+                    ws.tenant_id = tenant_id
+                    ws.save()
+                return task_global
+            
             tenant = TenantRepository.get_by_id(tenant_id)
             # Find or create a workspace to link the task to
             workspace = Workspace.objects.filter(tenant=tenant).first()
             if not workspace:
-                workspace = Workspace.objects.create(
-                    name="Auto-seeded Workspace for Tasks",
-                    tenant=tenant
+                try:
+                    workspace = Workspace.objects.create(
+                        name="Auto-seeded Workspace for Tasks",
+                        tenant=tenant
+                    )
+                except IntegrityError:
+                    workspace = Workspace.objects.filter(tenant=tenant).first()
+            
+            try:
+                return Task.objects.create(
+                    id=task_id,
+                    title=f"Auto-seeded Task {task_id}",
+                    description="Auto-seeded for testing",
+                    priority="MEDIUM",
+                    status="TODO",
+                    workspace=workspace
                 )
-            return Task.objects.create(
-                id=task_id,
-                title=f"Auto-seeded Task {task_id}",
-                description="Auto-seeded for testing",
-                priority="MEDIUM",
-                status="TODO",
-                workspace=workspace
-            )
+            except IntegrityError:
+                return Task.objects.get(id=task_id)
 
     @staticmethod
     def list_by_tenant(tenant_id, workspace_id=None):

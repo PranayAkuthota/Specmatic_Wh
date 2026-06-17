@@ -1,5 +1,9 @@
 version: 3
 
+test:
+  resiliencyTests:
+    enable: true
+
 dependencies:
   services:
     - service:
@@ -8,13 +12,13 @@ dependencies:
           - definition:
               source:
                 filesystem:
-                  directory: .
+                  directory: ./api-specs
               specs:
                 - spec:
-                    path: ./api-specs/auth.yaml
+                    path: auth.yaml
                 - spec:
-                    path: ./api-specs/tasks.yaml
+                    path: tasks.yaml
                 - spec:
-                    path: ./api-specs/tenants.yaml
+                    path: tenants.yaml
                 - spec:
-                    path: ./api-specs/workspaces.yaml
+                    path: workspaces.yaml

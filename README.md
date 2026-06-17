@@ -173,17 +173,3 @@ On every push:
 4. Runs contract tests against the running Django backend.
 
 ---
-
-## 📹 10-Minute Video Demo Guide
-
-For a technical walkthrough of WorkHive (e.g. for the Specmatic internship challenge), structure your presentation as follows:
-
-| Time | Section | Key Visuals & Talking Points |
-| :--- | :--- | :--- |
-| **0:00 - 1:30** | **Introduction & Architecture** | Explain the multi-tenant SaaS goal. Walk through `api-specs/` and highlight Spec-First Development. |
-| **1:30 - 3:00** | **Specmatic Stub Mocking** | Run `specmatic stub --port=9000`. Show how the React Frontend hooks up to Port 9000 and works instantly using Mock examples. |
-| **3:00 - 5:00** | **Clean Backend & Multi-Tenancy** | Show `core/repositories.py` and explain how multi-tenant isolation is enforced logically on Django queries. |
-| **5:00 - 6:30** | **Contract Testing Demo** | Run the Django backend and execute `specmatic test --host=localhost --port=8000`. Show the successful reports. |
-| **6:30 - 8:00** | **AI Agent Guardrails Demo** | Deliberately alter a field in `core/serializers.py` (e.g. rename `workspaceId` to `workspace_id`). Run `specmatic test` to show it fail, demonstrating how Specmatic catches AI code drift. |
-| **8:00 - 9:00** | **CI/CD Integration** | Show the `.github/workflows/ci.yml` pipeline file and explain how contract testing is enforced automatically on every commit. |
-| **9:00 - 10:00** | **Summary & Conclusion** | Wrap up by emphasizing how Specmatic acts as the single source of truth connecting APIs, Mocks, and automated tests. |

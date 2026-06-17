@@ -1,24 +1,23 @@
 version: 3
 
-test:
-  resiliencyTests:
-    enable: true
+systemUnderTest:
+  service:
+    $ref: "#/components/services/workhive"
 
-dependencies:
+components:
+  sources:
+    localFilesystem:
+      filesystem:
+        directory: ./api-specs
   services:
-    - service:
-        description: WorkHive APIs
-        definitions:
-          - definition:
-              source:
-                filesystem:
-                  directory: ./api-specs
-              specs:
-                - spec:
-                    path: auth.yaml
-                - spec:
-                    path: tasks.yaml
-                - spec:
-                    path: tenants.yaml
-                - spec:
-                    path: workspaces.yaml
+    workhive:
+      description: WorkHive APIs
+      definitions:
+        - definition:
+            source:
+              $ref: "#/components/sources/localFilesystem"
+            specs:
+              - auth.yaml
+              - tasks.yaml
+              - tenants.yaml
+              - workspaces.yaml

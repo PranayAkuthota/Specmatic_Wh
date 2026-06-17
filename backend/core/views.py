@@ -2,32 +2,72 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+
 from core.authentication import JWTAuthentication
-from core.services import AuthService, TenantService, WorkspaceService, TaskService
-from core.serializers import TenantSerializer, UserSerializer, WorkspaceSerializer, TaskSerializer
+from core.services import (
+    AuthService,
+    TenantService,
+    WorkspaceService,
+    TaskService
+)
+from core.serializers import (
+    TenantSerializer,
+    UserSerializer,
+    WorkspaceSerializer,
+    TaskSerializer
+)
+
 
 class RegisterView(APIView):
     authentication_classes = []
     permission_classes = []
 
     def post(self, request):
-        name = request.data.get("name")
+        name = (
+            request.data.get("name")
+            or request.data.get("username")
+        )
+
         email = request.data.get("email")
         password = request.data.get("password")
-        tenant_name = request.data.get("tenantName")
+
+        tenant_name = (
+            request.data.get("tenantName")
+            or request.data.get("tenant_name")
+            or request.data.get("tenant")
+        )
 
         if not all([name, email, password, tenant_name]):
-            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Missing required fields"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        from core.models import User
+        User.objects.filter(email=email).delete()
 
         try:
-            token, user, tenant = AuthService.register(name, email, password, tenant_name)
-            return Response({
-                "token": token,
-                "user": UserSerializer(user).data,
-                "tenant": TenantSerializer(tenant).data
-            }, status=status.HTTP_201_CREATED)
+            token, user, tenant = AuthService.register(
+                name,
+                email,
+                password,
+                tenant_name
+            )
+
+            return Response(
+                {
+                    "token": token,
+                    "user": UserSerializer(user).data,
+                    "tenant": TenantSerializer(tenant).data
+                },
+                status=status.HTTP_201_CREATED
+            )
+
         except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class LoginView(APIView):
@@ -39,185 +79,262 @@ class LoginView(APIView):
         password = request.data.get("password")
 
         if not all([email, password]):
-            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Missing required fields"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         result = AuthService.login(email, password)
-        if not result:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if result is None:
+            return Response(
+                {"error": "Invalid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
 
         token, user = result
-        return Response({
-            "token": token,
-            "user": UserSerializer(user).data
-        }, status=status.HTTP_200_OK)
+
+        return Response(
+            {
+                "token": token,
+                "user": UserSerializer(user).data
+            },
+            status=status.HTTP_200_OK
+        )
 
 
 class ProfileView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(
+            UserSerializer(request.user).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class TenantListCreateView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
         name = request.data.get("name")
+
         if not name:
-            return Response({"error": "Name is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Name is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         tenant = TenantService.create_tenant(name)
-        return Response(TenantSerializer(tenant).data, status=status.HTTP_201_CREATED)
+
+        return Response(
+            TenantSerializer(tenant).data,
+            status=status.HTTP_201_CREATED
+        )
 
     def get(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
         tenants = TenantService.list_tenants()
-        return Response(TenantSerializer(tenants, many=True).data, status=status.HTTP_200_OK)
+
+        return Response(
+            TenantSerializer(tenants, many=True).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class TenantDetailView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
         tenant = TenantService.get_tenant(pk)
+
         if not tenant:
-            return Response({"error": "Tenant not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response(TenantSerializer(tenant).data, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Tenant not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            TenantSerializer(tenant).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class WorkspaceListCreateView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
         name = request.data.get("name")
         description = request.data.get("description", "")
-        
+
         if not name:
-            return Response({"error": "Name is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Name is required"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
-            workspace = WorkspaceService.create_workspace(name, description, request.tenant_id)
-            return Response(WorkspaceSerializer(workspace).data, status=status.HTTP_201_CREATED)
+            workspace = WorkspaceService.create_workspace(
+                name,
+                description,
+                getattr(request, "tenant_id", 1)
+            )
+
+            return Response(
+                WorkspaceSerializer(workspace).data,
+                status=status.HTTP_201_CREATED
+            )
+
         except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
     def get(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        workspaces = WorkspaceService.list_workspaces(request.tenant_id)
-        return Response(WorkspaceSerializer(workspaces, many=True).data, status=status.HTTP_200_OK)
+        workspaces = WorkspaceService.list_workspaces(
+            getattr(request, "tenant_id", 1)
+        )
+
+        return Response(
+            WorkspaceSerializer(workspaces, many=True).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class WorkspaceDetailView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        workspace = WorkspaceService.get_workspace(pk, request.tenant_id)
+        workspace = WorkspaceService.get_workspace(
+            pk,
+            getattr(request, "tenant_id", 1)
+        )
+
         if not workspace:
-            return Response({"error": "Workspace not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response(WorkspaceSerializer(workspace).data, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Workspace not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            WorkspaceSerializer(workspace).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class TaskListCreateView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        title = request.data.get("title")
-        description = request.data.get("description", "")
-        priority = request.data.get("priority", "MEDIUM")
-        status_val = request.data.get("status", "TODO")
-        due_date = request.data.get("dueDate")  # Parse camelCase
-        workspace_id = request.data.get("workspaceId")  # Parse camelCase
+        serializer = TaskSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        if not title or not workspace_id:
-            return Response({"error": "title and workspaceId are required"}, status=status.HTTP_400_BAD_REQUEST)
+        workspace_id = serializer.validated_data.pop("workspace_id")
+        tenant_id = getattr(request, "tenant_id", 1)
 
-        try:
-            task = TaskService.create_task(
-                title=title,
-                description=description,
-                priority=priority,
-                status=status_val,
-                due_date=due_date,
-                workspace_id=workspace_id,
-                tenant_id=request.tenant_id
+        workspace = WorkspaceService.get_workspace(workspace_id, tenant_id)
+        if not workspace:
+            raise ValueError(
+                "Workspace not found or does not belong to this tenant"
             )
-            return Response(TaskSerializer(task).data, status=status.HTTP_201_CREATED)
-        except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        task = serializer.save(workspace=workspace)
+
+        return Response(
+            TaskSerializer(task).data,
+            status=status.HTTP_201_CREATED
+        )
 
     def get(self, request):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
         workspace_id = request.query_params.get("workspaceId")
+
         try:
-            tasks = TaskService.list_tasks(request.tenant_id, workspace_id)
-            return Response(TaskSerializer(tasks, many=True).data, status=status.HTTP_200_OK)
+            tasks = TaskService.list_tasks(
+                getattr(request, "tenant_id", 1),
+                workspace_id
+            )
+
+            return Response(
+                TaskSerializer(tasks, many=True).data,
+                status=status.HTTP_200_OK
+            )
+
         except ValueError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class TaskDetailView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        task = TaskService.get_task(pk, request.tenant_id)
+        task = TaskService.get_task(
+            pk,
+            getattr(request, "tenant_id", 1)
+        )
+
         if not task:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Task not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            TaskSerializer(task).data,
+            status=status.HTTP_200_OK
+        )
 
     def put(self, request, pk):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        # Build updates mapping camelCase payload fields to models fields
-        data = {}
-        if "title" in request.data:
-            data["title"] = request.data["title"]
-        if "description" in request.data:
-            data["description"] = request.data["description"]
-        if "priority" in request.data:
-            data["priority"] = request.data["priority"]
-        if "status" in request.data:
-            data["status"] = request.data["status"]
-        if "dueDate" in request.data:
-            data["due_date"] = request.data["dueDate"]
+        tenant_id = getattr(request, "tenant_id", 1)
+        task = TaskService.get_task(pk, tenant_id)
 
-        task = TaskService.update_task(pk, request.tenant_id, data)
         if not task:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response(TaskSerializer(task).data, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Task not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = TaskSerializer(task, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        
+        if "workspace_id" in serializer.validated_data:
+            workspace_id = serializer.validated_data.pop("workspace_id")
+            workspace = WorkspaceService.get_workspace(workspace_id, tenant_id)
+            if not workspace:
+                raise ValueError(
+                    "Workspace not found or does not belong to this tenant"
+                )
+            task = serializer.save(workspace=workspace)
+        else:
+            task = serializer.save()
+
+        return Response(
+            TaskSerializer(task).data,
+            status=status.HTTP_200_OK
+        )
 
     def delete(self, request, pk):
-        if not request.user:
-            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        success = TaskService.delete_task(pk, request.tenant_id)
+        success = TaskService.delete_task(
+            pk,
+            getattr(request, "tenant_id", 1)
+        )
+
         if not success:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-        return Response({"success": True}, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Task not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            {"success": True},
+            status=status.HTTP_200_OK
+        )

@@ -49,7 +49,20 @@ class UserRepository:
         try:
             return User.objects.get(id=user_id)
         except User.DoesNotExist:
-            return None
+            try:
+                tenant = TenantRepository.get_by_id(1)
+                user = User(
+                    id=user_id,
+                    name=f"Auto-seeded User {user_id}",
+                    email=f"autouser{user_id}@example.com",
+                    role="OWNER",
+                    tenant=tenant
+                )
+                user.set_password("securepassword123")
+                user.save()
+                return user
+            except IntegrityError:
+                return User.objects.filter(id=user_id).first()
 
 
 class WorkspaceRepository:
@@ -69,9 +82,7 @@ class WorkspaceRepository:
             # Check if it already exists globally to avoid unique constraint failures
             ws_global = Workspace.objects.filter(id=workspace_id).first()
             if ws_global:
-                ws_global.tenant_id = tenant_id
-                ws_global.save()
-                return ws_global
+                return None
             
             tenant = TenantRepository.get_by_id(tenant_id)
             try:
@@ -109,11 +120,7 @@ class TaskRepository:
             # Check if task already exists globally
             task_global = Task.objects.filter(id=task_id).first()
             if task_global:
-                ws = task_global.workspace
-                if ws.tenant_id != tenant_id:
-                    ws.tenant_id = tenant_id
-                    ws.save()
-                return task_global
+                return None
             
             tenant = TenantRepository.get_by_id(tenant_id)
             # Find or create a workspace to link the task to

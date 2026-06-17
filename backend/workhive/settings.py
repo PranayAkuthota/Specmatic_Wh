@@ -65,15 +65,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # REST Framework Settings
 REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "core.authentication.JWTAuthentication",
-    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [],
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
+    "EXCEPTION_HANDLER": "core.exceptions.custom_exception_handler",
 }
 
 # JWT Configuration

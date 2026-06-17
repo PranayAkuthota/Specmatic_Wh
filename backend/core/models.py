@@ -32,6 +32,18 @@ class User(models.Model):
     class Meta:
         db_table = "users"
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_active(self):
+        return True
+
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
 

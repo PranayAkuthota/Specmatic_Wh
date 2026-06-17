@@ -1,7 +1,19 @@
 from rest_framework import serializers
 from core.models import Tenant, User, Workspace, Task
 
+class StrictCharField(serializers.CharField):
+    def to_internal_value(self, data):
+        if data is None:
+            if self.allow_null:
+                return None
+            self.fail('null')
+        if not isinstance(data, str):
+            raise serializers.ValidationError("This field must be a string.")
+        return super().to_internal_value(data)
+
+
 class TenantSerializer(serializers.ModelSerializer):
+    name = StrictCharField()
     createdAt = serializers.DateTimeField(source="created_at", read_only=True)
 
     class Meta:
@@ -18,6 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
+    name = StrictCharField()
+    description = StrictCharField(required=False, allow_blank=True)
     tenantId = serializers.IntegerField(source="tenant_id", read_only=True)
 
     class Meta:
@@ -26,6 +40,8 @@ class WorkspaceSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
+    title = StrictCharField()
+    description = StrictCharField(required=False, allow_blank=True)
     dueDate = serializers.DateField(source="due_date", required=False, allow_null=True)
     workspaceId = serializers.IntegerField(source="workspace_id")
 
@@ -43,3 +59,16 @@ class TaskSerializer(serializers.ModelSerializer):
         if "dueDate" not in ret or ret["dueDate"] is None:
             ret["dueDate"] = None
         return ret
+
+
+class RegisterSerializer(serializers.Serializer):
+    name = StrictCharField()
+    email = serializers.EmailField()
+    password = StrictCharField(min_length=6)
+    tenantName = StrictCharField()
+
+
+class LoginSerializer(serializers.Serializer):
+    email = StrictCharField()
+    password = StrictCharField()
+

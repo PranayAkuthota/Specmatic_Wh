@@ -75,7 +75,8 @@ workhive/
 │   ├── architecture.md        # Clean architecture layers & Mermaid sequences
 │   ├── api-design.md          # OpenAPI 3.1 endpoint details
 │   ├── specmatic-guide.md     # Command line specmatic test guides
-│   └── ai-guardrails.md       # Regulating AI agent generation with contracts
+│   ├── ai-guardrails.md       # Regulating AI agent generation with contracts
+│   └── specmatic-resiliency-report.md # Report on schema resiliency tests and mock auth
 ├── docker-compose.yml         # Container orchestrator
 └── README.md                  # Main project guide
 ```
@@ -137,6 +138,16 @@ With Django running on Port 8000, execute:
 specmatic test --host=localhost --port=8000
 ```
 Specmatic will run positive, negative, and schema resiliency tests to ensure the Django view outputs match the OpenAPI yaml templates.
+
+### 3. Schema Resiliency (Generative Testing)
+We have enabled strict schema resiliency boundary testing using:
+```yaml
+specmatic:
+  settings:
+    test:
+      schemaResiliencyTests: all
+```
+For a detailed analysis of findings, resolved type-coercion issues, custom JSON exception handlers, and the mock authentication token fallback mechanism, see the [Specmatic Resiliency Testing Report](file:///Users/pranaykumarakuthota/Downloads/specmatic/docs/specmatic-resiliency-report.md).
 
 ---
 

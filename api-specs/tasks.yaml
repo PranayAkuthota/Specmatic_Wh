@@ -63,10 +63,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                invalidRequest:
-                  value:
-                    error: Invalid task data
+              example:
+                error: Invalid task data
 
         '401':
           description: Unauthorized
@@ -74,10 +72,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
     get:
       summary: List tasks
@@ -108,10 +104,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
   /tasks/{id}:
     get:
@@ -141,10 +135,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
         '404':
           description: Task not found
@@ -152,10 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                taskNotFound:
-                  value:
-                    error: Task not found
+              example:
+                error: Task not found
 
     put:
       summary: Update task
@@ -213,10 +203,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                invalidRequest:
-                  value:
-                    error: Invalid task data
+              example:
+                error: Invalid task data
 
         '401':
           description: Unauthorized
@@ -224,10 +212,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
         '404':
           description: Task not found
@@ -235,10 +221,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                taskNotFound:
-                  value:
-                    error: Task not found
+              example:
+                error: Task not found
 
     delete:
       summary: Delete task
@@ -272,10 +256,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
         '404':
           description: Task not found
@@ -283,10 +265,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                taskNotFound:
-                  value:
-                    error: Task not found
+              example:
+                error: Task not found
 
 components:
   securitySchemes:

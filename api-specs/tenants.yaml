@@ -40,10 +40,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                invalidRequest:
-                  value:
-                    error: Invalid tenant data
+              example:
+                error: Invalid tenant data
 
         '401':
           description: Unauthorized
@@ -51,10 +49,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
     get:
       summary: List all tenants
@@ -78,10 +74,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
   /tenants/{id}:
     get:
@@ -112,10 +106,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
         '404':
           description: Tenant not found
@@ -123,10 +115,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                tenantNotFound:
-                  value:
-                    error: Tenant not found
+              example:
+                error: Tenant not found
 
 components:
   securitySchemes:

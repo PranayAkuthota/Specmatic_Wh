@@ -43,10 +43,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                invalidRequest:
-                  value:
-                    error: Invalid workspace data
+              example:
+                error: Invalid workspace data
 
         '401':
           description: Unauthorized
@@ -54,10 +52,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
     get:
       summary: List workspaces for the authenticated tenant
@@ -81,10 +77,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
   /workspaces/{id}:
     get:
@@ -115,10 +109,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                unauthorized:
-                  value:
-                    error: Unauthorized access
+              example:
+                error: Unauthorized access
 
         '404':
           description: Workspace not found
@@ -126,10 +118,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-              examples:
-                workspaceNotFound:
-                  value:
-                    error: Workspace not found
+              example:
+                error: Workspace not found
 
 components:
   securitySchemes:

@@ -37,7 +37,8 @@ During the resiliency runs, several type-coercion, routing, and HTTP response co
 
 ### 4. HTML Responses on Path-Parameter Mutations
 * **Problem**: When Specmatic mutated path parameters from integers to string/boolean values (e.g. `/tasks/abc` or `/tenants/true`), Django failed to resolve the URL patterns (which were using `<int:pk>`). Because `DEBUG = True` was active, Django returned default HTML debug pages. Specmatic expected a JSON-formatted response for all 4xx/5xx codes and threw errors.
-* **Fix**: Changed default `DEBUG` configuration to `False` in [settings.py](file:///Users/pranaykumarakuthota/Downloads/specmatic/backend/workhive/settings.py). Registered custom global `handler404` and `handler500` JSON exception handlers in [urls.py](file:///Users/pranaykumarakuthota/Downloads/specmatic/backend/workhive/urls.py) and [views.py](file:///Users/pranaykumarakuthota/Downloads/specmatic/backend/core/views.py) that return a clean `{"error": "Page not found"}` JSON format.
+* **Fix**: Changed default `DEBUG` configuration to `False` in [settings.py](file:///Users/pranaykumarakuthota/Downloads/specmatic/backend/workhive/settings.py) and registered custom global `handler404` and `handler500` JSON exception handlers.
+* **CI Alignment**: Set the `DEBUG` environment variable to `"False"` in `.github/workflows/ci.yml` under the `Start Django Backend for Contract Testing` step so that custom JSON 404/500 handlers are also active in the CI runner.
 
 ### 5. Strict HTTP Status Code Mappings (GET Tasks & Login)
 * **Problem**: Specmatic mutated query parameters (such as `workspaceId` in `GET /tasks` or inputs to `POST /login`) to invalid types. The backend returned a `400 Bad Request` validation error. However, the OpenAPI specification for these endpoints does not list `400` as a possible response status; they only define `401 Unauthorized` for error scenarios. Specmatic flagged this as a specification mismatch.

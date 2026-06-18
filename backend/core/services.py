@@ -18,9 +18,9 @@ class AuthService:
             "user_id": user.id,
             "tenant_id": user.tenant.id,
             "role": user.role,
-            "exp": datetime.datetime.utcnow()
+            "exp": datetime.datetime.now(datetime.timezone.utc)
             + datetime.timedelta(hours=settings.JWT_EXPIRY_HOURS),
-            "iat": datetime.datetime.utcnow()
+            "iat": datetime.datetime.now(datetime.timezone.utc)
         }
 
         return jwt.encode(

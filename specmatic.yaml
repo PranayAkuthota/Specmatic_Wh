@@ -4,6 +4,11 @@ systemUnderTest:
   service:
     $ref: "#/components/services/workhive"
 
+dependencies:
+  services:
+    - service:
+        $ref: "#/components/services/workhive"
+
 specmatic:
   settings:
     test:

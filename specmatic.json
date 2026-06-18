@@ -1,0 +1,44 @@
+{
+  "version": 3,
+  "systemUnderTest": {
+    "service": {
+      "$ref": "#/components/services/workhive"
+    }
+  },
+  "specmatic": {
+    "settings": {
+      "test": {
+        "schemaResiliencyTests": "all"
+      }
+    }
+  },
+  "components": {
+    "sources": {
+      "localFilesystem": {
+        "filesystem": {
+          "directory": "./api-specs"
+        }
+      }
+    },
+    "services": {
+      "workhive": {
+        "description": "WorkHive APIs",
+        "definitions": [
+          {
+            "definition": {
+              "source": {
+                "$ref": "#/components/sources/localFilesystem"
+              },
+              "specs": [
+                "auth.yaml",
+                "tasks.yaml",
+                "tenants.yaml",
+                "workspaces.yaml"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

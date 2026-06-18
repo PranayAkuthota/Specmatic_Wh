@@ -54,7 +54,7 @@ jobs:
         run: |
           # Specmatic automatically validates examples when starting a stub
           # We run a quick check by running specmatic stub in the background and querying it
-          specmatic stub --port=9000 &
+          specmatic stub --config=specmatic.yaml --port=9000 &
           sleep 5
           curl -f http://localhost:9000/register -d '{"name": "Alice Smith", "email": "alice@example.com", "password": "securepassword123", "tenantName": "Acme Corp"}' -H "Content-Type: application/json"
           kill %1
@@ -76,7 +76,7 @@ jobs:
       - name: Run Specmatic Contract Tests
         run: |
           # Run Specmatic test runner against the django server
-          specmatic test --host=localhost --port=8000
+          specmatic test --config=specmatic.yaml --host=localhost --port=8000
 
       - name: Run Specmatic Backward Compatibility Check
         run: |

@@ -2,9 +2,9 @@ name: WorkHive CI
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, pranaymac ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, pranaymac ]
 
 jobs:
   backend-tests:

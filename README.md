@@ -165,11 +165,19 @@ See [ai-guardrails.md](file:///Users/pranaykumarakuthota/.gemini/antigravity/scr
 
 ## 🔄 CI/CD Pipeline
 
-The WorkHive CI pipeline is defined at [.github/workflows/ci.yml](file:///Users/pranaykumarakuthota/.gemini/antigravity/scratch/workhive/.github/workflows/ci.yml).
+The WorkHive CI pipeline is defined at [.github/workflows/ci.yml](file:///Users/pranaykumarakuthota/.gemini/antigravity-ide/brain/ba313494-e870-4185-b5bf-980b3ec5f344/.system_generated/tasks/ci.yml).
 On every push:
 1. Runs Django migrations and executes Python unit tests (`pytest`).
 2. Starts the Django backend.
 3. Launches Specmatic to validate all contract example configurations.
 4. Runs contract tests against the running Django backend.
+
+---
+
+## 📖 Learning Journey with Specmatic
+
+A detailed write-up describing my experience learning Contract-Driven Development through Specmatic Academy and applying those concepts to WorkHive.
+
+See: [specmatic-learning-journey.md](specmatic-learning-journey.md)
 
 ---

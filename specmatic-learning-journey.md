@@ -4,7 +4,7 @@ Hi everyone! I recently completed the Specmatic Academy courses and decided to p
 
 I wanted to share my experience, the technical challenges I ran into, and what I learned along the way. If you've ever dealt with API documentation going out of date or frontend integrations breaking unexpectedly, this might be useful for you.
 
----
+
 
 ## Understanding Contract-Driven Development
 
@@ -12,7 +12,7 @@ Before this, I usually treated OpenAPI (Swagger) specifications as just document
 
 In Contract-Driven Development, you write the API spec first. Then, instead of writing dozens of integration tests by hand to verify your endpoints, Specmatic reads your OpenAPI files and automatically runs tests against your backend. If your code doesn't match the spec, the tests fail. This approach keeps the frontend and backend teams in sync and catches bugs long before they get merged.
 
----
+
 
 ## Implementing Specmatic in WorkHive
 
@@ -34,7 +34,7 @@ One of the coolest features I explored was Specmatic's generative resiliency tes
 
 By enabling `schemaResiliencyTests: all` in `specmatic.yaml`, Specmatic goes a step further and runs negative tests. It automatically mutates inputs to see if the server breaks. For instance, it will try sending a boolean instead of an integer, leave out required fields, or pass `null` values. This forced me to make sure my API fails gracefully with proper error messages instead of crashing or behaving unpredictably.
 
----
+
 
 ## Challenges I Faced
 
@@ -89,7 +89,7 @@ Specmatic warns you if you define named examples in your responses (like a `400`
 
 To clean this up, I refactored my OpenAPI files. Instead of using named `examples` objects under my responses, I replaced them with a single anonymous `example` key. This matches OpenAPI 3.0 standards and silenced the warnings completely.
 
----
+
 
 ## GitHub Actions Integration and Compatibility Checks
 
@@ -101,7 +101,7 @@ Once everything passed locally, I set up a GitHub Actions workflow to automate t
 
 The backward compatibility check is incredibly useful. It compares my current OpenAPI specs against the `main` branch to make sure I haven't accidentally renamed a field, deleted a path, or added a required parameter that could break existing client applications.
 
----
+
 
 ## Key Takeaways
 
@@ -110,7 +110,7 @@ Working on this project taught me a few important lessons:
 * **Resiliency needs to be built-in**: Generative testing forces you to look at input validation seriously. Writing custom validations like `StrictCharField` made the backend much more secure.
 * **Automate early**: Having Specmatic run in GitHub Actions gives me peace of mind that any new code doesn't drift from the specification.
 
----
+
 
 ## Results
 

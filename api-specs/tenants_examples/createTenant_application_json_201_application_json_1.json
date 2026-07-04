@@ -1,0 +1,27 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer specmatic-example-create-tenant"
+        },
+        "body": {
+            "name": "Specmatic Example Tenant 900940"
+        },
+        "description": "This is an example of a request to create a new entity at the /tenants endpoint "
+    },
+    "http-response": {
+        "status": 201,
+        "body": {
+            "id": 900940,
+            "name": "Specmatic Example Tenant 900940",
+            "createdAt": "2026-12-31T23:59:59Z"
+        },
+        "status-text": "Created",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /tenants endpoint "
+    }
+}

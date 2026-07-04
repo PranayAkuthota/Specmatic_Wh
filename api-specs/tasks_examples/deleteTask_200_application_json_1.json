@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tasks/842",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer nostrum"
+        },
+        "description": "This is an example of a request to delete an entity at the /tasks/842 endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": {
+            "success": false
+        },
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response confirming deletion of an entity at the /tasks/842 endpoint"
+    }
+}

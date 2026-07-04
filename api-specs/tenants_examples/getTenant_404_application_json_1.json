@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tenants/746",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer notfound"
+        },
+        "description": "This is an example of a request to retrieve a specific entity at the /tenants/746 endpoint"
+    },
+    "http-response": {
+        "status": 404,
+        "body": {
+            "error": "Not Found"
+        },
+        "status-text": "Not Found",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

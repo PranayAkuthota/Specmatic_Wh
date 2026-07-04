@@ -28,7 +28,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - SECRET_KEY=django-insecure-workhive-super-secret-key-12345
-      - DEBUG=True
+      - DEBUG=False
     depends_on:
       - postgres
 

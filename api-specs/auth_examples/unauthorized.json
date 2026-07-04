@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/profile",
+        "method": "GET",
+        "headers": {
+            "X-Test-Case": "unauthorized",
+            "Authorization": "Bearer asperiores"
+        },
+        "body": ""
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Unauthorized"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

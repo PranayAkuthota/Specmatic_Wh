@@ -1,0 +1,35 @@
+{
+    "http-request": {
+        "path": "/tasks/528",
+        "method": "PUT",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer maxime"
+        },
+        "body": {
+            "title": "Future Program Engineer",
+            "description": "Yoshinoya is in business to create the structure and systems needed to allow our customers access to the majority of their away-from-home daily meal requirements on a one-stop-shop basis. All our products shall be of the highest quality and value, be healthy, nutritious and provided with outstanding personal services at the lowest possible prices consistent with a fair return on investment for our shareholders, job enhancementsecurity for our employees and a level of community involvement by everyone connected with our business. All of our products and services shall be delivered consistently and measured one satisfied customer at a time, whether by company-owned or franchised operations, in superior, clean, convenient, fun and friendly neighborhood environments. We pledge to make Yoshinoya the best place to eat and the best place to work.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-06-28"
+        },
+        "description": "This is an example of a request to update an existing entity at the /tasks/528 endpoint "
+    },
+    "http-response": {
+        "status": 200,
+        "body": {
+            "id": 124,
+            "title": "Global Security Administrator",
+            "description": "To provide an exceptional dining experience that satisfies our guests’ grown-up tastes by being a Cut-Above in everything we do.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-06-28",
+            "workspaceId": 685
+        },
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after updating an existing entity at the /tasks/528 endpoint "
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer porro"
+        },
+        "description": "This is an example of a request to retrieve a list of entities at the /tenants endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": [
+            {
+                "id": 400,
+                "name": "Tabitha Hettinger",
+                "createdAt": "2026-06-28T16:53:17+05:30"
+            },
+            {
+                "id": 248,
+                "name": "Philip Walter",
+                "createdAt": "2026-06-28T16:53:17+05:30"
+            }
+        ],
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

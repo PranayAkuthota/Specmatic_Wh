@@ -1,0 +1,23 @@
+{
+    "http-request": {
+        "path": "/tenants/919",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer cupiditate"
+        },
+        "description": "This is an example of a request to retrieve a specific entity at the /tenants/919 endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": {
+            "id": 965,
+            "name": "Carletta Purdy",
+            "createdAt": "2026-06-28T16:53:17+05:30"
+        },
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

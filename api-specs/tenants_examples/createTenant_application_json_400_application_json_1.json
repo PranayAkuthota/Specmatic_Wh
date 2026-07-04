@@ -1,0 +1,22 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer AGFNV"
+        },
+        "description": "This is an example of a bad request for POST /tenants endpoint"
+    },
+    "http-response": {
+        "status": 400,
+        "body": {
+            "error": "Not Found"
+        },
+        "status-text": "Bad Request",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response for a bad request sent to POST /tenants endpoint"
+    }
+}

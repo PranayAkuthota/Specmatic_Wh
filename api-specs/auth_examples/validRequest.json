@@ -1,0 +1,37 @@
+{
+    "http-request": {
+        "path": "/register",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": {
+            "name": "Specmatic Example Owner",
+            "email": "specmatic.owner.900001@example.com",
+            "password": "password123",
+            "tenantName": "Specmatic Example Tenant"
+        }
+    },
+    "http-response": {
+        "status": 201,
+        "body": {
+            "token": "jwt-token",
+            "user": {
+                "id": 900001,
+                "name": "Specmatic Example Owner",
+                "email": "specmatic.owner.900001@example.com",
+                "role": "OWNER",
+                "tenantId": 900001
+            },
+            "tenant": {
+                "id": 900001,
+                "name": "Specmatic Example Tenant",
+                "createdAt": "2026-06-13T12:00:00Z"
+            }
+        },
+        "status-text": "Created",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

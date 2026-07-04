@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/workspaces/392",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer unauthorized"
+        },
+        "description": "This is an example of a request to retrieve a specific entity at the /workspaces/392 endpoint"
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Gone"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

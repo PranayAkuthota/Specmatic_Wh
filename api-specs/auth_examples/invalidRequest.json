@@ -1,0 +1,22 @@
+{
+    "http-request": {
+        "path": "/register",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "body": {
+            "name": "Alice Smith"
+        }
+    },
+    "http-response": {
+        "status": 400,
+        "body": {
+            "error": "Invalid request"
+        },
+        "status-text": "Bad Request",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

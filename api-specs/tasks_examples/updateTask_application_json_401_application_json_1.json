@@ -1,0 +1,29 @@
+{
+    "http-request": {
+        "path": "/tasks/951",
+        "method": "PUT",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer unauthorized"
+        },
+        "body": {
+            "title": "Dynamic Integration Strategist",
+            "description": "To deliver an exceptional shopping experience by offering the best service, value, quality, and freshest products while being good stewards of our environment and giving back to the communities we serve.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-06-28"
+        },
+        "description": "This is an example of a request to update an existing entity at the /tasks/951 endpoint "
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Request-URI Too Long"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after updating an existing entity at the /tasks/951 endpoint "
+    }
+}

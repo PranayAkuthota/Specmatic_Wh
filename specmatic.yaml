@@ -2,12 +2,24 @@ version: 3
 
 systemUnderTest:
   service:
-    $ref: "#/components/services/workhive"
+    description: WorkHive APIs
+    definitions:
+      - definition:
+          source:
+            $ref: "#/components/sources/localFilesystem"
+          specs:
+            - auth.yaml
+            - tasks.yaml
+            - tenants.yaml
+            - workspaces.yaml
+    runOptions:
+      openapi:
+        baseUrl: http://localhost:8000
 
-dependencies:
-  services:
-    - service:
-        $ref: "#/components/services/workhive"
+#dependencies:
+#  services:
+#    - service:
+#        $ref: "#/components/services/workhive"
 
 specmatic:
   settings:
@@ -19,15 +31,3 @@ components:
     localFilesystem:
       filesystem:
         directory: ./api-specs
-  services:
-    workhive:
-      description: WorkHive APIs
-      definitions:
-        - definition:
-            source:
-              $ref: "#/components/sources/localFilesystem"
-            specs:
-              - auth.yaml
-              - tasks.yaml
-              - tenants.yaml
-              - workspaces.yaml

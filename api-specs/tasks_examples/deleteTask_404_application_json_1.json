@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tasks/346",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer notfound"
+        },
+        "description": "This is an example of a request to delete an entity at the /tasks/346 endpoint"
+    },
+    "http-response": {
+        "status": 404,
+        "body": {
+            "error": "Request Terminated"
+        },
+        "status-text": "Not Found",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response confirming deletion of an entity at the /tasks/346 endpoint"
+    }
+}

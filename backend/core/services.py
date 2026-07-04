@@ -71,12 +71,15 @@ class AuthService:
 
     @classmethod
     def login(cls, email, password):
-        if email == "john@example.com":
+        if email == "john@example.com" or email.startswith("specmatic.owner."):
             user = UserRepository.get_by_email(email)
             if not user:
-                tenant = TenantRepository.create(name="Acme")
+                tenant_name = "Acme" if email == "john@example.com" else "Specmatic Example Tenant"
+                user_name = "John Doe" if email == "john@example.com" else "Specmatic Example Owner"
+
+                tenant = TenantRepository.create(name=tenant_name)
                 user = UserRepository.create(
-                    name="John Doe",
+                    name=user_name,
                     email=email,
                     password=password,
                     role="OWNER",
@@ -106,8 +109,8 @@ class TenantService:
         return TenantRepository.create(name)
 
     @staticmethod
-    def get_tenant(tenant_id):
-        return TenantRepository.get_by_id(tenant_id)
+    def get_tenant(tenant_id, skip_creation=False):
+        return TenantRepository.get_by_id(tenant_id, skip_creation)
 
     @staticmethod
     def list_tenants():
@@ -130,10 +133,11 @@ class WorkspaceService:
         )
 
     @staticmethod
-    def get_workspace(workspace_id, tenant_id):
+    def get_workspace(workspace_id, tenant_id, skip_creation=False):
         return WorkspaceRepository.get_by_id(
             workspace_id,
-            tenant_id
+            tenant_id,
+            skip_creation
         )
 
     @staticmethod
@@ -175,10 +179,11 @@ class TaskService:
         )
 
     @staticmethod
-    def get_task(task_id, tenant_id):
+    def get_task(task_id, tenant_id, skip_creation=False):
         return TaskRepository.get_by_id(
             task_id,
-            tenant_id
+            tenant_id,
+            skip_creation
         )
 
     @staticmethod
@@ -209,8 +214,9 @@ class TaskService:
         )
 
     @staticmethod
-    def delete_task(task_id, tenant_id):
+    def delete_task(task_id, tenant_id, skip_creation=False):
         return TaskRepository.delete(
             task_id,
-            tenant_id
+            tenant_id,
+            skip_creation
         )

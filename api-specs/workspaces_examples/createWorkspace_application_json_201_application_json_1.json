@@ -1,0 +1,29 @@
+{
+    "http-request": {
+        "path": "/workspaces",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer specmatic-example-create-workspace"
+        },
+        "body": {
+            "name": "Specmatic Example Workspace 900541",
+            "description": "Reserved example workspace used by contract tests to avoid colliding with seeded names or IDs."
+        },
+        "description": "This is an example of a request to create a new entity at the /workspaces endpoint "
+    },
+    "http-response": {
+        "status": 201,
+        "body": {
+            "id": 900541,
+            "name": "Specmatic Example Workspace 900541",
+            "description": "Reserved example workspace used by contract tests to avoid colliding with seeded names or IDs.",
+            "tenantId": 900781
+        },
+        "status-text": "Created",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /workspaces endpoint "
+    }
+}

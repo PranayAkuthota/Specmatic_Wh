@@ -1,0 +1,30 @@
+{
+    "http-request": {
+        "path": "/tasks",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer unauthorized"
+        },
+        "body": {
+            "title": "Specmatic Example Task Unauthorized 900002",
+            "description": "Reserved unauthorized example payload for contract testing. Uses a non-seeded workspace reference to avoid fixture collisions.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-12-31",
+            "workspaceId": 900537
+        },
+        "description": "This is an example of a request to create a new entity at the /tasks endpoint "
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Ambiguous"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /tasks endpoint "
+    }
+}

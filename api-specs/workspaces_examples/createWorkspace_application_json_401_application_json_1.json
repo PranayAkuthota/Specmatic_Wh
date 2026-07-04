@@ -1,0 +1,26 @@
+{
+    "http-request": {
+        "path": "/workspaces",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer unauthorized"
+        },
+        "body": {
+            "name": "Specmatic Example Workspace Unauthorized 900542",
+            "description": "Reserved unauthorized workspace example used by contract tests to avoid colliding with seeded names or IDs."
+        },
+        "description": "This is an example of a request to create a new entity at the /workspaces endpoint "
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Too Many Hops"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /workspaces endpoint "
+    }
+}

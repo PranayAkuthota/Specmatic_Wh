@@ -1,0 +1,22 @@
+{
+    "http-request": {
+        "path": "/tasks",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer CPUYH"
+        },
+        "description": "This is an example of a bad request for POST /tasks endpoint"
+    },
+    "http-response": {
+        "status": 400,
+        "body": {
+            "error": "Not Acceptable"
+        },
+        "status-text": "Bad Request",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response for a bad request sent to POST /tasks endpoint"
+    }
+}

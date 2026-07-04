@@ -1,0 +1,25 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer unauthorized"
+        },
+        "body": {
+            "name": "Specmatic Example Tenant Unauthorized 900941"
+        },
+        "description": "This is an example of a request to create a new entity at the /tenants endpoint "
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Proxy Authentication Required"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /tenants endpoint "
+    }
+}

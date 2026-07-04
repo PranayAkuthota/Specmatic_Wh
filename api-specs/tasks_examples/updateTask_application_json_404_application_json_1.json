@@ -1,0 +1,29 @@
+{
+    "http-request": {
+        "path": "/tasks/978",
+        "method": "PUT",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer notfound"
+        },
+        "body": {
+            "title": "Human Division Consultant",
+            "description": "To achieve and maintain such distinction in food and wine, service, atmosphere and setting that the restaurant gains a first class reputation for gastronomy, gracious and informed hospitality, comfort and beauty which draws new and repeat customers year after year. To achieve the above whilst upholding staff policies and practices which promote a fair and positive working environment. To be aware of and act on our responsibilities as a good corporate citizen to  provide a safe, clean and attractive place for guests to enjoy and for employees to work in - ensure ecologically sound management practices at the restaurant and in our surrounding gardens and woods - undertake meaningful involvement of Restaurant Les Foug\u00e8res in selected charitable activities in our community and region.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-06-28"
+        },
+        "description": "This is an example of a request to update an existing entity at the /tasks/978 endpoint "
+    },
+    "http-response": {
+        "status": 404,
+        "body": {
+            "error": "Conflict"
+        },
+        "status-text": "Not Found",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after updating an existing entity at the /tasks/978 endpoint "
+    }
+}

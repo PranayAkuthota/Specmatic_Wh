@@ -1,0 +1,22 @@
+{
+    "http-request": {
+        "path": "/tasks/600",
+        "method": "PUT",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer PTQNB"
+        },
+        "description": "This is an example of a bad request for PUT /tasks/600 endpoint"
+    },
+    "http-response": {
+        "status": 400,
+        "body": {
+            "error": "Conflict"
+        },
+        "status-text": "Bad Request",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response for a bad request sent to PUT /tasks/600 endpoint"
+    }
+}

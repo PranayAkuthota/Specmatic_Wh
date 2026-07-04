@@ -1,0 +1,24 @@
+{
+    "http-request": {
+        "path": "/workspaces/722",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer quaerat"
+        },
+        "description": "This is an example of a request to retrieve a specific entity at the /workspaces/722 endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": {
+            "id": 455,
+            "name": "Della Trantow",
+            "description": "To sell delicious and remarkable food and drinks. That the food and drink we sell meets the highest standards of quality, freshness and seasonality and combines both modern-creative and traditional southern styles of cooking. To consistently provide our customers with impeccable service by demonstrating warmth, graciousness, efficiency, knowledge, professionalism and integrity in our work. To have every customer who comes through our doors leave impressed by Maxie’s and excited to come back again. To create and maintain a restaurant that is comprehensive and exceptional in its attention to every detail of operation. To provide all who work with us a friendly, cooperative and rewarding environment which encourages long- term, satisfying, growth employment. To keep our concept fresh, exciting and on the cutting edge of the hospitality and entertainment industry. To be a giving member of the Ithaca community and to use our restaurant to improve the quality of life in the Finger Lakes region.",
+            "tenantId": 204
+        },
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

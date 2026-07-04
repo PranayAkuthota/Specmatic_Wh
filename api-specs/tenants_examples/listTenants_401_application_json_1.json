@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer unauthorized"
+        },
+        "description": "This is an example of a request to retrieve a list of entities at the /tenants endpoint"
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Request-URI Too Long"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

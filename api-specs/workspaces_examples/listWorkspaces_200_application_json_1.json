@@ -1,0 +1,26 @@
+{
+    "http-request": {
+        "path": "/workspaces",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer iste"
+        },
+        "description": "This is an example of a request to retrieve a list of entities at the /workspaces endpoint"
+    },
+    "http-response": {
+        "status": 200,
+        "body": [
+            {
+                "id": 888,
+                "name": "Zora Hintz II",
+                "description": "To deliver an exceptional shopping experience by offering the best service, value, quality, and freshest products while being good stewards of our environment and giving back to the communities we serve.",
+                "tenantId": 947
+            }
+        ],
+        "status-text": "OK",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

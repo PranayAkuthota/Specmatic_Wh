@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tasks/987",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer unauthorized"
+        },
+        "description": "This is an example of a request to delete an entity at the /tasks/987 endpoint"
+    },
+    "http-response": {
+        "status": 401,
+        "body": {
+            "error": "Temporarily Unavailable"
+        },
+        "status-text": "Unauthorized",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response confirming deletion of an entity at the /tasks/987 endpoint"
+    }
+}

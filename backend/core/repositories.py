@@ -1,5 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.db.models import Max
 from core.models import Tenant, User, Workspace, Task
 
 class TenantRepository:
@@ -9,10 +10,12 @@ class TenantRepository:
         return tenant
 
     @staticmethod
-    def get_by_id(tenant_id):
+    def get_by_id(tenant_id, skip_creation=False):
         try:
             return Tenant.objects.get(id=tenant_id)
         except Tenant.DoesNotExist:
+            if skip_creation:
+                return None
             try:
                 # Auto-seed for testing compatibility
                 return Tenant.objects.create(id=tenant_id, name=f"Auto-seeded Tenant {tenant_id}")
@@ -75,16 +78,20 @@ class WorkspaceRepository:
         )
 
     @staticmethod
-    def get_by_id(workspace_id, tenant_id):
+    def get_by_id(workspace_id, tenant_id, skip_creation=False):
         try:
             return Workspace.objects.get(id=workspace_id, tenant_id=tenant_id)
         except Workspace.DoesNotExist:
+            if skip_creation:
+                return None
             # Check if it already exists globally to avoid unique constraint failures
             ws_global = Workspace.objects.filter(id=workspace_id).first()
             if ws_global:
                 return None
             
-            tenant = TenantRepository.get_by_id(tenant_id)
+            tenant = TenantRepository.get_by_id(tenant_id, skip_creation)
+            if not tenant:
+                return None
             try:
                 return Workspace.objects.create(
                     id=workspace_id,
@@ -103,26 +110,40 @@ class WorkspaceRepository:
 class TaskRepository:
     @staticmethod
     def create(title, description, priority, status, due_date, workspace):
-        return Task.objects.create(
-            title=title,
-            description=description,
-            priority=priority,
-            status=status,
-            due_date=due_date,
-            workspace=workspace
-        )
+        create_kwargs = {
+            "title": title,
+            "description": description,
+            "priority": priority,
+            "status": status,
+            "due_date": due_date,
+            "workspace": workspace,
+        }
+
+        try:
+            return Task.objects.create(**create_kwargs)
+        except IntegrityError as exc:
+            if "tasks_pkey" not in str(exc):
+                raise
+
+            next_id = (Task.objects.aggregate(max_id=Max("id"))["max_id"] or 0) + 1
+
+            return Task.objects.create(id=next_id, **create_kwargs)
 
     @staticmethod
-    def get_by_id(task_id, tenant_id):
+    def get_by_id(task_id, tenant_id, skip_creation=False):
         try:
             return Task.objects.get(id=task_id, workspace__tenant_id=tenant_id)
         except Task.DoesNotExist:
+            if skip_creation:
+                return None
             # Check if task already exists globally
             task_global = Task.objects.filter(id=task_id).first()
             if task_global:
                 return None
             
-            tenant = TenantRepository.get_by_id(tenant_id)
+            tenant = TenantRepository.get_by_id(tenant_id, skip_creation)
+            if not tenant:
+                return None
             # Find or create a workspace to link the task to
             workspace = Workspace.objects.filter(tenant=tenant).first()
             if not workspace:
@@ -170,8 +191,8 @@ class TaskRepository:
         return task
 
     @staticmethod
-    def delete(task_id, tenant_id):
-        task = TaskRepository.get_by_id(task_id, tenant_id)
+    def delete(task_id, tenant_id, skip_creation=False):
+        task = TaskRepository.get_by_id(task_id, tenant_id, skip_creation)
         if not task:
             return False
         task.delete()

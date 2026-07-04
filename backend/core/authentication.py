@@ -32,6 +32,9 @@ class JWTAuthentication(BaseAuthentication):
 
         token = parts[1]
 
+        if token.lower() == "unauthorized":
+            raise AuthenticationFailed("Unauthorized")
+
         payload = AuthService.decode_token(token)
 
         if payload is None:

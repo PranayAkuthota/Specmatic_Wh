@@ -1,0 +1,21 @@
+{
+    "http-request": {
+        "path": "/tasks/711",
+        "method": "GET",
+        "headers": {
+            "Authorization": "Bearer notfound"
+        },
+        "description": "This is an example of a request to retrieve a specific entity at the /tasks/711 endpoint"
+    },
+    "http-response": {
+        "status": 404,
+        "body": {
+            "error": "Forbidden"
+        },
+        "status-text": "Not Found",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response "
+    }
+}

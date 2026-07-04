@@ -1,0 +1,36 @@
+{
+    "http-request": {
+        "path": "/tasks",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer specmatic-example-create-task"
+        },
+        "body": {
+            "title": "Specmatic Example Task Create 900001",
+            "description": "Reserved example payload for contract testing. Uses a non-seeded workspace reference to avoid fixture collisions.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-12-31",
+            "workspaceId": 900421
+        },
+        "description": "This is an example of a request to create a new entity at the /tasks endpoint "
+    },
+    "http-response": {
+        "status": 201,
+        "body": {
+            "id": 900312,
+            "title": "Specmatic Example Task Create 900001",
+            "description": "Reserved example payload for contract testing. Uses a non-seeded workspace reference to avoid fixture collisions.",
+            "priority": "LOW",
+            "status": "TODO",
+            "dueDate": "2026-12-31",
+            "workspaceId": 900421
+        },
+        "status-text": "Created",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "description": "This is an example of a response after creating a new entity at the /tasks endpoint "
+    }
+}

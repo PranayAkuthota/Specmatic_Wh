@@ -54,7 +54,7 @@ jobs:
         run: |
           # Specmatic automatically validates examples when starting a stub
           # We run a quick check by running specmatic stub in the background and querying it
-          specmatic stub --config=specmatic.yaml --port=9000 &
+          specmatic stub --port=9000 api-specs/auth.yaml api-specs/tasks.yaml api-specs/tenants.yaml api-specs/workspaces.yaml &
           sleep 5
           curl --retry 5 --retry-connrefused --retry-delay 2 -f http://localhost:9000/register -d '{"name": "Alice Smith", "email": "alice@example.com", "password": "securepassword123", "tenantName": "Acme Corp"}' -H "Content-Type: application/json"
           kill %1

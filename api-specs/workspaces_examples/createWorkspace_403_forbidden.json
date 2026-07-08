@@ -1,0 +1,24 @@
+{
+    "http-request": {
+        "path": "/workspaces",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer member-token"
+        },
+        "body": {
+            "name": "Forbidden Workspace Create Attempt",
+            "description": "This request should return 403 Forbidden because it is sent by a MEMBER"
+        }
+    },
+    "http-response": {
+        "status": 403,
+        "body": {
+            "error": "Forbidden"
+        },
+        "status-text": "Forbidden",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

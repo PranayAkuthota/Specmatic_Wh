@@ -55,6 +55,15 @@ paths:
               example:
                 error: Unauthorized access
 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Forbidden
+
     get:
       summary: List workspaces for the authenticated tenant
       operationId: listWorkspaces

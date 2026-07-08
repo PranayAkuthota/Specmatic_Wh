@@ -259,6 +259,15 @@ paths:
               example:
                 error: Unauthorized access
 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Forbidden
+
         '404':
           description: Task not found
           content:

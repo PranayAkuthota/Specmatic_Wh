@@ -151,15 +151,6 @@ paths:
       security:
         - BearerAuth: []
 
-      parameters:
-        - name: X-Test-Case
-          in: header
-          required: false
-          schema:
-            type: string
-          examples:
-            unauthorized:
-              value: unauthorized
 
       responses:
         '200':

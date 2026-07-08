@@ -1,0 +1,23 @@
+{
+    "http-request": {
+        "path": "/tenants",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer member-token"
+        },
+        "body": {
+            "name": "Forbidden Tenant Create Attempt"
+        }
+    },
+    "http-response": {
+        "status": 403,
+        "body": {
+            "error": "Forbidden"
+        },
+        "status-text": "Forbidden",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

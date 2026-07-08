@@ -1,0 +1,19 @@
+{
+    "http-request": {
+        "path": "/tasks/1",
+        "method": "DELETE",
+        "headers": {
+            "Authorization": "Bearer member-token"
+        }
+    },
+    "http-response": {
+        "status": 403,
+        "body": {
+            "error": "Forbidden"
+        },
+        "status-text": "Forbidden",
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+}

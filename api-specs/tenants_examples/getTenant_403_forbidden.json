@@ -1,18 +1,17 @@
 {
     "http-request": {
-        "path": "/profile",
+        "path": "/tenants/1",
         "method": "GET",
         "headers": {
-            "Authorization": "Bearer asperiores"
-        },
-        "body": ""
+            "Authorization": "Bearer member-token"
+        }
     },
     "http-response": {
-        "status": 401,
+        "status": 403,
         "body": {
-            "error": "Unauthorized"
+            "error": "Forbidden"
         },
-        "status-text": "Unauthorized",
+        "status-text": "Forbidden",
         "headers": {
             "Content-Type": "application/json"
         }

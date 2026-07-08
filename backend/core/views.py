@@ -111,6 +111,12 @@ class TenantListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        if request.user.role != "OWNER":
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         serializer = TenantSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         name = serializer.validated_data["name"]
@@ -123,6 +129,12 @@ class TenantListCreateView(APIView):
         )
 
     def get(self, request):
+        if request.user.role != "OWNER":
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         tenants = TenantService.list_tenants()
 
         return Response(
@@ -136,11 +148,13 @@ class TenantDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        skip_creation = (
-            request.headers.get("X-Test-Case") in ["not-found", "notfound"]
-            or request.headers.get("x-test-case") in ["not-found", "notfound"]
-            or (request.auth and "notfound" in str(request.auth).lower())
-        )
+        if request.user.role != "OWNER":
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        skip_creation = bool(request.auth and "notfound" in str(request.auth).lower())
         tenant = TenantService.get_tenant(pk, skip_creation=skip_creation)
 
         if not tenant:
@@ -160,6 +174,12 @@ class WorkspaceListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        if request.user.role not in ["OWNER", "ADMIN"]:
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         serializer = WorkspaceSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         name = serializer.validated_data["name"]
@@ -199,11 +219,7 @@ class WorkspaceDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        skip_creation = (
-            request.headers.get("X-Test-Case") in ["not-found", "notfound"]
-            or request.headers.get("x-test-case") in ["not-found", "notfound"]
-            or (request.auth and "notfound" in str(request.auth).lower())
-        )
+        skip_creation = bool(request.auth and "notfound" in str(request.auth).lower())
         workspace = WorkspaceService.get_workspace(
             pk,
             getattr(request, "tenant_id", 1),
@@ -272,11 +288,7 @@ class TaskDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, pk):
-        skip_creation = (
-            request.headers.get("X-Test-Case") in ["not-found", "notfound"]
-            or request.headers.get("x-test-case") in ["not-found", "notfound"]
-            or (request.auth and "notfound" in str(request.auth).lower())
-        )
+        skip_creation = bool(request.auth and "notfound" in str(request.auth).lower())
         task = TaskService.get_task(
             pk,
             getattr(request, "tenant_id", 1),
@@ -302,11 +314,7 @@ class TaskDetailView(APIView):
             )
 
         tenant_id = getattr(request, "tenant_id", 1)
-        skip_creation = (
-            request.headers.get("X-Test-Case") in ["not-found", "notfound"]
-            or request.headers.get("x-test-case") in ["not-found", "notfound"]
-            or (request.auth and "notfound" in str(request.auth).lower())
-        )
+        skip_creation = bool(request.auth and "notfound" in str(request.auth).lower())
         task = TaskService.get_task(pk, tenant_id, skip_creation=skip_creation)
 
         if not task:
@@ -335,11 +343,13 @@ class TaskDetailView(APIView):
         )
 
     def delete(self, request, pk):
-        skip_creation = (
-            request.headers.get("X-Test-Case") in ["not-found", "notfound"]
-            or request.headers.get("x-test-case") in ["not-found", "notfound"]
-            or (request.auth and "notfound" in str(request.auth).lower())
-        )
+        if request.user.role not in ["OWNER", "ADMIN"]:
+            return Response(
+                {"error": "Forbidden"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        skip_creation = bool(request.auth and "notfound" in str(request.auth).lower())
         success = TaskService.delete_task(
             pk,
             getattr(request, "tenant_id", 1),

@@ -52,6 +52,15 @@ paths:
               example:
                 error: Unauthorized access
 
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Forbidden
+
     get:
       summary: List all tenants
       operationId: listTenants
@@ -76,6 +85,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
                 error: Unauthorized access
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Forbidden
 
   /tenants/{id}:
     get:
@@ -108,6 +126,15 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
               example:
                 error: Unauthorized access
+
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: Forbidden
 
         '404':
           description: Tenant not found
